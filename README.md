@@ -29,7 +29,7 @@ Visit [http://localhost:8000](http://localhost:8000).
 ```yaml
 services:
   web:
-    image: your-dockerhub-username/pockerdeck:latest
+    image: ceco556/pockerdeck:latest
     ports:
       - "8000:8000"
     restart: unless-stopped
