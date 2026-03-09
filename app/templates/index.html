@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PockerDeck – Planning Poker</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body class="home-body">
+  <div class="hero">
+    <div class="hero-content">
+      <div class="hero-logo">🃏</div>
+      <h1>PockerDeck</h1>
+      <p>
+        Simple planning poker for agile teams.<br />
+        Create a room, share the link — no sign-up needed.
+      </p>
+
+      <form action="/create-room" method="post">
+        <button type="submit" class="btn btn-primary btn-large">+ Create Room</button>
+      </form>
+
+      <div class="divider"><span>or join with a code</span></div>
+
+      <div class="join-form">
+        <input
+          type="text"
+          id="room-code"
+          placeholder="Room code (e.g. a1b2c3d4)"
+          maxlength="8"
+          autocomplete="off"
+          spellcheck="false"
+        />
+        <button onclick="joinByCode()" class="btn btn-secondary">Join →</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('room-code').addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') joinByCode();
+    });
+
+    function joinByCode() {
+      var code = document.getElementById('room-code').value.trim();
+      if (code) window.location.href = '/room/' + encodeURIComponent(code);
+    }
+  </script>
+</body>
+</html>

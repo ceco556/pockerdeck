@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PockerDeck</title>
+  <link rel="stylesheet" href="/static/css/style.css" />
+</head>
+<body>
+
+  <!-- ── Name entry modal (visible by default; hidden by JS for returning users) ── -->
+  <div id="name-modal" class="modal-overlay">
+    <div class="modal">
+      <div class="modal-emoji">🃏</div>
+      <h2>Join Session</h2>
+      <p>Enter your name to join the planning session</p>
+      <input
+        type="text"
+        id="name-input"
+        placeholder="Your name"
+        maxlength="32"
+        autocomplete="off"
+        autocorrect="off"
+        spellcheck="false"
+      />
+      <button onclick="submitName()" class="btn btn-primary btn-full">Join →</button>
+    </div>
+  </div>
+
+  <!-- ── Main room app (hidden until name is confirmed) ── -->
+  <div id="app" class="room-layout hidden">
+
+    <!-- Header -->
+    <div class="panel room-header">
+      <div>
+        <h1>🃏 PockerDeck</h1>
+        <div class="room-id-label">Room: <strong id="room-id-text"></strong></div>
+      </div>
+      <div class="header-right">
+        <span id="conn-status" class="status-badge disconnected">Connecting…</span>
+        <button id="copy-btn" onclick="copyLink()" class="btn btn-secondary">📋 Copy Link</button>
+      </div>
+    </div>
+
+    <!-- Story / Task description -->
+    <div class="panel">
+      <div class="panel-title">Story / Task</div>
+      <div class="story-row">
+        <textarea
+          id="story-text"
+          rows="2"
+          placeholder="Describe the story or task you're estimating (press Enter to share)…"
+        ></textarea>
+        <button onclick="setStory()" class="btn btn-secondary">Update</button>
+      </div>
+    </div>
+
+    <!-- Voting cards (hidden after reveal) -->
+    <div id="cards-panel" class="panel">
+      <div class="panel-title">Cast Your Vote</div>
+      <div id="vote-progress" class="vote-progress"></div>
+      <div id="cards-grid" class="cards-grid"></div>
+    </div>
+
+    <!-- Participants -->
+    <div class="panel">
+      <div class="panel-title">Participants</div>
+      <div id="participants" class="participants-grid"></div>
+    </div>
+
+    <!-- Results (shown after reveal) -->
+    <div id="results-panel" class="panel hidden">
+      <div class="panel-title">Results</div>
+      <div class="results-grid">
+        <div class="result-stat">
+          <div id="res-avg" class="result-number">–</div>
+          <div class="result-label">Average</div>
+        </div>
+        <div class="result-stat">
+          <div id="res-min" class="result-number">–</div>
+          <div class="result-label">Minimum</div>
+        </div>
+        <div class="result-stat">
+          <div id="res-max" class="result-number">–</div>
+          <div class="result-label">Maximum</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action buttons -->
+    <div class="controls-row">
+      <button id="reveal-btn" onclick="revealVotes()" class="btn btn-primary btn-large">
+        👁 Reveal Votes
+      </button>
+      <button id="reset-btn" onclick="newRound()" class="btn btn-success btn-large hidden">
+        🔄 New Round
+      </button>
+    </div>
+
+  </div><!-- /#app -->
+
+  <!-- Inject room ID for JS before loading the script -->
+  <script>const ROOM_ID = "{{ room_id }}";</script>
+  <script src="/static/js/room.js"></script>
+</body>
+</html>
