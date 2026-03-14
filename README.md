@@ -5,24 +5,32 @@ No login, no registration — create a room, share the link, start estimating.
 
 ## Features
 
-- Create a room instantly with a shareable link
+- **Roles** — room creator is Admin; joiners pick Participant or Viewer
+- **Backlog management** — add stories before creating the room; Admin picks the active item; completed items marked Done
+- **Estimation types** — Story Points (Fibonacci), T-shirt sizes, Hours, or fully Custom card sets
 - Real-time voting via WebSockets — all participants see updates live
-- Cards: `3, 6, 9, 12, 15, 18, 21, 24, 27, 30, 30+, ?`
-- Votes stay hidden until the host reveals them
+- Votes stay hidden until revealed — prevents anchoring bias
 - Results panel shows average, min, and max after reveal
-- "New Round" resets all votes for everyone
-- Optional story/task description shared across the room
-- Fully Dockerised — runs anywhere
+- New Round resets votes without losing the active story or backlog
+- Admin can kick users and rename them
+- Copy Link button — shareable link is always clean
+- Fully Dockerised — multi-arch image (`linux/amd64` + `linux/arm64`)
 
-## Run locally
+## Quick start
 
 ```bash
-git clone https://github.com/your-username/pockerdeck.git
+git clone https://github.com/byteavanta/pockerdeck.git
 cd pockerdeck
 docker compose up -d --build
 ```
 
 Visit [http://localhost:8000](http://localhost:8000).
+
+## Docker Hub
+
+```bash
+docker run -d -p 8000:8000 --restart unless-stopped ceco556/pockerdeck:latest
+```
 
 ## Deploy on a server
 
@@ -42,3 +50,7 @@ services:
 ```
 
 The app will be available at `http://<YOUR_SERVER_IP>:8000`.
+
+## Documentation
+
+Full docs at **https://byteavanta.github.io/pockerdeck-doc/**
