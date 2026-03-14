@@ -1,5 +1,3 @@
-const CARDS = ['3', '6', '9', '12', '15', '18', '21', '24', '27', '30', '30+','?'];
-
 let userName = null;
 let userRole = 'user';
 let ws = null;
