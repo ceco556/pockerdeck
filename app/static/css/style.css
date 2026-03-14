@@ -504,3 +504,21 @@ body {
   .controls-row { flex-direction: column; align-items: center; }
   .controls-row .btn { width: 100%; max-width: 320px; }
 }
+
+/* ══════════════════════════════════════════════════
+   VERSION FOOTER
+══════════════════════════════════════════════════ */
+
+.app-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  text-align: right;
+  padding: 0.4rem 1rem;
+  font-size: 0.72rem;
+  color: #a0aec0;
+  letter-spacing: 0.04em;
+  pointer-events: none;
+  user-select: none;
+}

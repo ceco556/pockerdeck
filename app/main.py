@@ -1,4 +1,5 @@
 import uuid
+from pathlib import Path
 from typing import Dict
 
 from fastapi import FastAPI, WebSocket, WebSocketDisconnect, Request
@@ -11,7 +12,9 @@ app = FastAPI()
 app.mount("/static", StaticFiles(directory="static"), name="static")
 templates = Jinja2Templates(directory="templates")
 
-# In-memory room storage: room_id -> { users: {name: vote|None}, revealed: bool, story: str }
+_VERSION_FILE = Path(__file__).parent / "VERSION"
+APP_VERSION = _VERSION_FILE.read_text().strip() if _VERSION_FILE.exists() else "unknown"
+
 rooms: Dict[str, dict] = {}
 
 
@@ -67,7 +70,7 @@ def build_state(room_id: str) -> dict:
 
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request})
+    return templates.TemplateResponse("index.html", {"request": request, "version": APP_VERSION})
 
 
 @app.post("/create-room")
@@ -81,7 +84,7 @@ async def create_room():
 async def room_page(request: Request, room_id: str):
     if room_id not in rooms:
         return RedirectResponse(url="/")
-    return templates.TemplateResponse("room.html", {"request": request, "room_id": room_id})
+    return templates.TemplateResponse("room.html", {"request": request, "room_id": room_id, "version": APP_VERSION})
 
 
 # ── WebSocket ─────────────────────────────────────────────────────────────────
@@ -92,7 +95,6 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_name: str)
         await websocket.close(code=4004)
         return
 
-    # Sanitise – length limit only; encoding is handled by FastAPI path parsing
     user_name = user_name.strip()[:32] or "Anonymous"
 
     await manager.connect(room_id, user_name, websocket)
@@ -104,7 +106,7 @@ async def websocket_endpoint(websocket: WebSocket, room_id: str, user_name: str)
             try:
                 data = await websocket.receive_json()
             except ValueError:
-                continue  # ignore malformed JSON
+                continue
 
             if not isinstance(data, dict):
                 continue
